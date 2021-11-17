@@ -1,0 +1,294 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{textcomp}
+\usepackage{amsthm}
+\usepackage{subcaption}
+\usepackage[portuguese]{babel}
+\usepackage{geometry}
+\geometry{a4paper, left=3cm, top=3cm, right=2cm, bottom=2cm}
+\usepackage{multicol}
+\title{Cálculo 2}
+\author{Caio Tomás}
+\date{November 25, 2019}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+    Este documento é um compilado de três textos, escritos pelo autor, sobre as EDOs de Hermite e do MHS amortecido. Esses textos foram escritos no 2º semestre de 2019, ao longo do curso de Cálculo 2 da Universidade de Brasília, ministrado pelo professor Lucas Conque Seco Ferreira.
+\end{abstract}
+
+%\tableofcontents
+%\newpage
+
+\section{Oscilações Forçadas}
+\par Nesse texto, analisamos as soluções de duas EDOs com dois forçamentos específicos: uma sem amortecimento e uma com amortecimento, usando o método dos coeficientes a determinar. Além disso, são feitas observações acerca das diferenças entre as duas soluções gerais e seus significados físicos.
+
+\subsection{Oscilação sem amortecimento}
+\par\hspace{12pt} Considere a seguinte EDO sem amortecimento:
+\begin{equation}
+y''(t) + \omega_0 ^2 y(t) = F\sin(\omega_1 t)
+\end{equation}
+\par Utilizando a equação característica da homogênea associada e o anulador de $F\sin(\omega_1t)$, podemos reescrever a EDO da seguinte forma:
+\begin{align*}
+(D^2 + \omega_1^ 2)(D^2 + \omega_0 ^2)y(t) = 0
+\end{align*}
+sendo $D$ o operador diferencial.
+\par Note que podemos ter $\omega_0$ e $\omega_1$ iguais ou distintos. Como cada caso implica um formato de solução diferente, devido à multiplicidade das raízes, vamos dividir nossa análise.
+\subsubsection{Caso 1: $\omega_0 = \omega_1$}
+\par\hspace{12pt} Se $\omega_0 = \omega_1$, sabemos que 
+\begin{align*}
+y(t) = \underbrace{c_1\cos(\omega_0t) + c_2\sin(\omega_0t)}_{\big (y_h(t)\big)} + \underbrace{D_1t\cos(\omega_0t) + D_2t\sin(\omega_0t)}_{\big (y_p(t)\big)}
+\end{align*}
+\par sendo $y_h(t), y_p(t)$ as soluções geral da homogênea e particular da não homogênea, respectivamente. 
+\par Substituindo $y_p(t)$ em (1), segue:
+\begin{align*}
+&D_1(t\cos(\omega_0t))'' + D_2(t\sin(\omega_0t))'' + \omega_0 ^2(D_1t\cos(\omega_0t) + D_2t\sin(\omega_0t)) = F\sin(\omega_0t) \\ \Leftrightarrow &D_1(-2\omega_0\sin(\omega_0t) - \omega_0 ^2\cos(\omega_0t))  \\ &+ D_2(2\omega_0\cos(\omega_0t) - \omega_0 ^2\sin(\omega_0t))  \\ &+ \omega_0 ^2 (D_1t\cos(\omega_0t) + D_2t\sin(\omega_0t)) = F\sin(\omega_0t)
+\end{align*}
+\par Note que, por se tratar de uma identidade em $t$, podemos substituir $t = 0$ para obter $D_2 = 0$. Daí, a identidade se torna:
+\begin{align*}
+&D_1(-2\omega_0\sin(\omega_0t) - \omega_0 ^2\cos(\omega_0t)) + \omega_0 ^2 D_1t\cos(\omega_0t) = F\sin(\omega_0t) \\ \Leftrightarrow -2&D_1\omega_0\sin(\omega_0t) = F\sin(\omega_0t) \\ \Leftrightarrow D_1& = -\frac{F}{2\omega_0}
+\end{align*}
+\par Logo, se $\omega_0 = \omega_1$, a solução geral de (1) é
+\begin{equation*}
+y(t) = y_h(t) - \frac{F}{2\omega_0}t\cos(\omega_0t)
+\end{equation*}
+\par Note que, nesse caso, há ressonância, ou seja, a amplitude aumenta com o passar do tempo devido ao fator $t$. 
+\subsubsection{Caso 2: $\omega_0 \neq \omega_1$}
+\par\hspace{12pt} Se $\omega_0 \neq \omega_1$, temos que
+\begin{equation*}
+y(t) = \underbrace{c_1\cos(\omega_0t) + c_2\sin(\omega_0t)}_{\big (y_h(t)\big)} + \underbrace{D_1\cos(\omega_1t) + D_2\sin(\omega_1t)}_{\big (y_p(t)\big)}
+\end{equation*}
+\par Novamente, substituindo $y_p(t)$ em (1), vem:
+\begin{align*}
+D_1(\cos(\omega_1t))'' + D_2(\sin(\omega_1t))'' + \omega_0 ^2(D_1\cos(\omega_1t) + D_2\sin(\omega_1t)) = F\sin(\omega_1t) \\ \Leftrightarrow D_1(\omega_0 ^2 - \omega_1 ^2)\cos(\omega_1t) + D_2(\omega_0 ^2 - \omega_1 ^2)\sin(\omega_1t) = F\sin(\omega_1t)
+\end{align*}
+\par Como $\omega_0 \neq \omega_1$, então $\omega_0 ^2 - \omega_1 ^2 \neq 0$. Além disso, a igualdade acima é uma identidade em $t$, logo podemos substituir $t = 0$ para obter $D_1 = 0$. Daí, a identidade se torna:
+\begin{align*}
+&D_2(\omega_0 ^2 - \omega_1 ^2)\sin(\omega_1t) = F\sin(\omega_1t) \\ \Leftrightarrow &\sin(\omega_1t)(D_2(\omega_0 ^2 - \omega_1 ^2) - F) = 0 \\ \Leftrightarrow &D_2 = \frac{F}{\omega_0 ^2 - \omega_1 ^2}
+\end{align*}
+\par Logo, se $\omega_0 \neq \omega_1$, a solução geral de (1) é
+\begin{equation*}
+y(t) = y_h(t) + \frac{F}{\omega_0 ^2 - \omega_1 ^2}\sin(\omega_1t)
+\end{equation*}
+\par Nesse caso, como as frequências $\omega_0$ e $\omega_1$ são distintas, não há ressonância, mas batimento.
+\subsection{Oscilação com amortecimento}
+\par\hspace{12pt} Agora, considere a EDO com amortecimento:
+\begin{equation}
+y''(t) + by'(t) + \omega_0 ^2y(t) = F\sin(\omega_1t)
+\end{equation}
+\par com $b\in\mathbb{R_{+}^{*}}$. Reescrevendo o lado esquerdo da EDO com o operador diferencial e aplicando o anulador do forçamento, obtemos
+\begin{align*}
+\begin{cases}
+(D^2 + \omega_1 ^2)(D + r_1)^2y(t) = 0, b = 2\omega_0 \\
+(D^2 + \omega_1 ^2)(D + r_1)(D + r_2)y(t) = 0, b > 2\omega_0 \\
+(D^2 + \omega_1 ^2)((D^2 - \alpha ^2) + \beta ^2)y(t) = 0,  b < 2\omega_0
+\end{cases}
+\end{align*} 
+\par sendo $r_1, r_2$ as raízes da equação característica da homegênea associada de (2) e $\alpha, \beta$ as partes real e imaginária, respectivamente, no caso de raízes imaginárias. De qualquer forma, sabemos que as raízes da equação característica nunca serão $\pm i\omega_1$, pois não temos raízes imaginárias puras já que $b\neq 0$. Logo, nos três casos, a solução geral da EDO tem a forma
+\begin{align*}
+y(t) = y_h(t) + \underbrace{A\cos(\omega_1t) + B\sin(\omega_1t)}_{\big ({y_{p}(t)}\big) } 
+\end{align*}
+\par Agora, substituindo $y_p(t)$ em (2), temos
+\begin{align*}
+A(\cos(\omega_1t))'' + B(\sin(\omega_1t))'' + bA(\cos(\omega_1t))' + bB(\sin(\omega_1t))' + \omega_0 ^2 (A\cos(\omega_1t) + B\sin(\omega_1t)) = F\sin(\omega_1t) \\ \Leftrightarrow ((\omega_0 ^2 - \omega_1 ^2)A + b\omega_1B)\cos(\omega_1t) + ((\omega_0 ^2 - \omega_1 ^2)B - b\omega_1A)\sin(\omega_1t) = F\sin(\omega_1t)
+\end{align*}
+\par Daí, obtemos o sistema
+\begin{equation*}
+\begin{cases}
+(\omega_0 ^2 - \omega_1 ^2)A + b\omega_1B = 0 \\ (\omega_0 ^2 - \omega_1 ^2)B - b\omega_1A = F
+\end{cases} \Leftrightarrow 
+\begin{cases}
+A = -\displaystyle{\frac{b\omega_1}{(\omega_0 ^2 - \omega_1 ^2)^2 + b^2\omega_1 ^2}}F \\ B = \displaystyle{\frac{\omega_0 ^ 2 - \omega_1 ^2}{(\omega_0 ^2 - \omega_1 ^2)^2 + b^2\omega_1 ^2}}F
+\end{cases}
+\end{equation*}
+\par Logo, a solução geral de (2) é
+\begin{equation*}
+y(t) = y_h(t) - \displaystyle{\frac{b\omega_1}{(\omega_0 ^2 - \omega_1 ^2)^2 + b^2\omega_1 ^2}}F\cos(\omega_1t) + \displaystyle{\frac{\omega_0 ^ 2 - \omega_1 ^2}{(\omega_0 ^2 - \omega_1 ^2)^2 + b^2\omega_1 ^2}}F\sin(\omega_1t)
+\end{equation*}
+\subsection{Considerações finais}
+\hspace{12pt} Trocando o forçamento em (1) por $F\cos(\omega_1t)$, o que mudaria nas soluções? 
+\vspace{0.3cm}
+\par\hspace{12pt} Escrevendo as soluções na mesma forma e procedendo de modo análogo para encontrar as soluções particulares, obtemos:
+\begin{equation*}\tag{\textbf{Caso 1}}
+y(t) = y_h(t) + \frac{F}{2\omega_0}t\cos(\omega_0t) 
+\end{equation*}
+\begin{equation*}\tag{\textbf{Caso 2}}
+y(t) = y_h(t) + \frac{F}{\omega_0 ^2 - \omega_1 ^2}\cos(\omega_1t) 
+\end{equation*}
+\begin{equation*}\tag{\textbf{Amortecimento}}
+y(t) = y_h(t) + \displaystyle{\frac{\omega_0 ^ 2 - \omega_1 ^2}{(\omega_0 ^2 - \omega_1 ^2)^2 + b^2\omega_1 ^2}}F\cos(\omega_1t) + \displaystyle{\frac{b\omega_1}{(\omega_0 ^2 - \omega_1 ^2)^2 + b^2\omega_1 ^2}}F\sin(\omega_1t)
+\end{equation*}
+\vspace{0.3cm}
+\par\hspace{12pt} Note que quando introduzimos qualquer amortecimento (no texto, consideramos $b>0$, mas para $b<0$ a mesma conclusão vale.), não ocorre ressonância, independentemente da frequência do forçamento,i.e., do valor de $\omega_1$. Essa situação é bem diferente da primeira, em que um forçamento com a frequência natural do sistema ($\omega_0$) provoca ressonância (e possíveis problemas).
+
+
+\section{A equação de Hermite}
+\hspace{12pt} Quando analisamos um oscilador harmônico quântico, nos deparamos (mediante mudança de escala e procurando soluções da forma $X(x) = e^{-x^2/2}\cdot y(x)$ para a equação de Schrödinger) com a EDO
+\begin{align}
+y''(x) - 2xy'(x) + 2\lambda y(x) = 0
+\end{align} 
+com $\lambda \in\mathbb{R}$, chamada equação de Hermite. Nesse texto, vamos procurar soluções canônicas polinomiais para essa equação e, no processo, mostrar que só há soluções canônicas polinomiais para valores inteiros não negativos de $\lambda$. Além disso, são feitas observações ao final generalizando (considerando $\lambda$ inteiro não negativo) os PVI's que soluções têm de satisfazer para que sejam polinomiais. 
+
+\subsection{Soluções polinomiais}
+\hspace{12pt} Vamos buscar soluções de (1) da forma
+\begin{align}
+y(x) = \sum_{n\geq 0}^{}c_n x^n
+\end{align}
+com $c_n = 0$ $\forall n\geq N$, para algum $N$ natural e $y(x)$ satisfazendo um dos seguintes PVI's
+\begin{align}
+	\begin{cases}
+		y_1(0)  =  1 \\
+		y'_1(0) =  0 \\
+	\end{cases} \\
+	\begin{cases}
+		y_2(0) = 0 \\ 
+		y'_2(0) = 1 \\
+	\end{cases}
+\end{align}
+ou seja, estamos buscando soluções canônicas polinomiais. 
+\par De (2), obtemos
+\begin{align*}
+2\lambda y(x) &= \sum_{n\geq 0}^{}2\lambda c_n x^n \\
+-2xy'(x) &= -2x\sum_{n\geq 1}^{}nc_nx^{n-1} = \sum_{n\geq 0}^{}-2nc_nx^n \\
+y''(x) &= \sum_{n\geq 2}^{}n(n-1)c_nx^{n-2} = \sum_{n\geq 0}^{}(n+2)(n+1)c_{n+2}x^n
+\end{align*}
+\par Agora, substituindo na EDO, segue
+\begin{align*}
+&\sum_{n\geq 0}^{}\Big((n+2)(n+1)c_{n+2} - 2nc_n + 2\lambda c_n\Big)x^n \equiv 0  
+\end{align*}
+que é equivalente a 
+\begin{align*}
+(n+2)(n+1)c_{n+2} - 2nc_n + 2\lambda c_n = 0 \Leftrightarrow c_{n+2} = \frac{2(n - \lambda)}{(n+2)(n+1)}c_n
+\end{align*}
+\par Logo, se $y_1(x)$ é uma solução polinomial que satisfaz (3) e $y_2(x)$ é um solução polinomial que satisfaz (4), então 
+\begin{align}
+\begin{cases}
+c_0 = 1 \\ c_1 = 0
+\end{cases} \\
+\begin{cases}
+d_0 = 0 \\
+d_1 = 1
+\end{cases}
+\end{align}
+sendo $c_n$ os coeficientes de $y_1(x)$ e $d_n$ os coeficientes de $y_2(x)$.
+\vspace{0.2cm}
+\par Note que, por (5) e pela relação de recorrência, todo coeficiente de índice ímpar de $y_1(x)$ é nulo. Além disso, note também que se $\lambda$ é par não negativo, então os coeficientes restantes de $y_1(x)$,i.e., os coeficientes de índice par, se anulam a partir de $n = \lambda = N$, logo $y_1(x)$ é solução polinomial de grau $\lambda$. Note por fim que se $\lambda $ é par não negativo, então $y_2(x)$ é, na verdade, uma série de potências, pois apesar de todos os coeficientes de índice par serem nulos (por (6) e pela relação de recorrência), os coeficientes de índice ímpar não se anulam, pois nem $n- \lambda$ nem $c_n$ se anulam. 
+\vspace{0.2cm}
+\par Se $\lambda$ é positivo e ímpar, os papéis se invertem: $y_1(x)$ é, na verdade, uma série de potências (por (5) e pela relação de recorrência) e $y_2(x)$ é solução polinomial de grau $\lambda$, pois os coeficientes de índice par são todos nulos (por (6) e pela relação de recorrência) e os coeficientes de índice ímpar se anulam a partir de $n = \lambda = N$. 
+\vspace{0.2cm}
+\par Se $\lambda\notin\mathbb{Z_{+}}$, então não existem soluções canônicas polinomiais, pois tanto $y_1(x)$ quanto $y_2(x)$ se tornam séries de potências, uma vez que os coeficientes de índice ímpar são nulos mas os de índice par não se anulam nunca (por (5) e pela recorrência) e os coeficientes de índice par são nulos mas os de índice ímpar nunca se anulam (por (6) e pela recorrência), respectivamente para $y_1(x)$ e $y_2(x)$. 
+\vspace{0.2cm}
+\par Com isso, provamos que $\forall \lambda\in\mathbb{Z_{+}}$, a equação de Hermite tem solução canônica polinomial. Além disso, mostramos também que $\nexists\lambda\notin\mathbb{Z_{+}}$ tal que a equação de Hermite tenha solução canônica polinomial, ou seja, provamos que $y(x)$ é solução canônica polinomial da equação de Hermite se, e somente se, $\lambda$ é inteiro não negativo. 
+\begin{flushright}
+	$\square$
+\end{flushright}  
+\subsection{Algumas observações}
+\begin{itemize}
+    \item De modo análogo ao acima, podemos mostrar que $y_1(x)$ e $y_2(x)$ são soluções polinomiais satisfazendo os PVI's
+\begin{align*}
+\begin{cases}
+y_1(0)  =  x_0 \\
+y'_1(0) =  0 \\
+\end{cases} \\
+\begin{cases}
+y_2(0) = 0 \\ 
+y'_2(0) = x_0 \\
+\end{cases} \\ 
+\end{align*}
+(com $x_0\neq 0$) se, e somente se, $\lambda $ é inteiro não negativo.
+
+\item Note também que $y_1(x)$ e $y_2(x)$ são soluções polinomiais satisfazendo os PVI's
+\begin{align*}
+\begin{cases}
+y_1(0)  =  x_0 \\
+y'_1(0) =  x_1 \\
+\end{cases} \\
+\begin{cases}
+y_2(0) = x_1 \\ 
+y'_2(0) = x_0 \\
+\end{cases} \\ 
+\end{align*}
+(com $x_0^2 \neq x_1^2$) se, e somente se, $\lambda$ é inteiro não negativo \textbf{e} $x_1 = 0$ \textbf{ou} $x_0 = 0$. Isso porque mesmo $\lambda $ sendo inteiro não negativo, apenas os coeficientes de índice de uma determinada paridade se anulam (a partir do índice $N = \lambda$). Os coeficientes com a outra paridade só se anulam se $c_n = 0$ para algum $n$, o que só acontece se $c_0 = 0$ (se $\lambda$ ímpar) ou se $c_1 = 0$ (se $\lambda$ par). 
+\end{itemize}
+\par Por exemplo, se $\lambda$ é par, então todos os coeficientes de índice par se anulam a partir de $n = N = \lambda$, mas os coeficientes de índice ímpar nunca se anulam se $c_1 \neq 0$.
+\vspace{0.2cm}
+\par A observação 2 é particularmente interessante pois mostra que o fato de $\lambda$ ser inteiro não negativo não é forte o suficiente para que os PVI's da forma apresentada acima sejam arbitrários.
+
+\section{Movimento Oscilatório}
+Seja a EDO linear de segunda ordem com coeficientes constantes
+\begin{align}
+\beta ''(t) + b\beta '(t) + (k - 1)\beta (t) = 0
+\end{align} 
+com $b,k>0$. Queremos $b,k$ tais que $\displaystyle{\lim_{t\to \infty}\beta (t) = 0}$, sendo $\beta (t)$ a solução geral de (1). Vamos dividir nossa análise em 3 casos: $\Delta > 0$, $\Delta = 0$ e $\Delta < 0$, sendo $\Delta$ o discriminante da equação característica de (1).
+\subsection{O caso $\Delta > 0$}
+\hspace{12pt} Sabemos que a equação característica de (1) é:
+\begin{equation}
+r^2 + br - (1 - k) = 0
+\end{equation}
+Daí, temos $\Delta = b^2 + 4(1 - k)$. Consequentemente, $\Delta > 0$ implica em:
+\begin{align*}
+b^2 > 4(k - 1) \Rightarrow k < 1 + \frac{b^2}{4}
+\end{align*}
+Como $\Delta > 0$, as raízes de (2) são $r_{1,2} \in\mathbb{R}, r_1 \neq r_2$ da forma:
+\begin{align*}
+r_1 = \frac{-b - \sqrt{\Delta}}{2} \\
+r_2 = \frac{-b + \sqrt{\Delta}}{2}
+\end{align*}
+Daí, a solução geral de (1) é 
+\begin{equation*}
+\beta (t) = c_1e^{r_1t} + c_2e^{r_2t}
+\end{equation*}
+com $c_1, c_2\in\mathbb{R}$ quaisquer. Queremos obter condições em $r_1$ e $r_2$ de forma que ambos sejam negativos (para que $\displaystyle{\lim_{t\to \infty}\beta (t) = 0} $). Note que $r_1$ já é negativo. Vamos então analisar o sinal de $r_2$.
+\begin{equation*}
+r_2 < 0 \Leftrightarrow \frac{-b + \sqrt{\Delta}}{2} < 0 \Leftrightarrow b > \sqrt{\Delta} \Leftrightarrow b^2 > b^2 + 4(1-k) \Leftrightarrow k > 1
+\end{equation*}
+Portanto, devemos ter $b>0$ e $\displaystyle{1 < k < 1 + \frac{b^2}{4}}$ para que $\displaystyle{\lim_{t\to \infty}\beta (t) = 0}$.
+
+\subsection{O caso $\Delta = 0$}
+\hspace{12pt} Se $\Delta = 0$, então $b^2 = 4(k-1)$ ou, equivalentemente, $\displaystyle{k = 1 + \frac{b^2}{4}}$. Nesse caso, as soluções de (2) são 
+\begin{equation*}
+r_1 = -\frac{b}{2} = r_2
+\end{equation*}
+Nesse caso, a solução geral de (1) é da forma
+\begin{equation*}
+\beta (t) = c_1e^{r_1t} + c_2te^{r_2t}
+\end{equation*}
+sendo $c_1, c_2 \in\mathbb{R}$ quaisquer. É imediato que $r_1, r_2 < 0$. Logo:
+\begin{equation*}
+\lim_{t\to \infty}\beta (t) = \lim_{t\to \infty}(c_1e^{r_1t} + c_2te^{r_2t}) = 0
+\end{equation*}
+usando a regra de L'Hôpital no segundo termo.
+Portanto, para $\displaystyle{k = 1 + \frac{b^2}{4}}$ temos $\displaystyle{\lim_{t\to \infty}\beta (t) = 0}$. 
+
+\subsection{O caso $\Delta < 0$}
+\hspace{12pt} Se $\Delta < 0$, devemos ter:
+\begin{equation*}
+b^2 < 4(k - 1) \Rightarrow k > 1 + \frac{b^2}{4}
+\end{equation*}
+Nesse caso, as raízes de (2) são imaginárias da forma
+\begin{align*}
+r_1 = \frac{-b -i\sqrt{-\Delta}}{2} = \omega - i\alpha \\
+r_2 = \frac{-b +i\sqrt{-\Delta}}{2} = \omega + i\alpha 
+\end{align*}
+com $\displaystyle{\omega = \frac{-b}{2}}$ e $\displaystyle{\alpha = \frac{\sqrt{-\Delta}}{2}}$. Por fim, a solução geral de (1) nesse caso é dada por:
+\begin{equation*}
+\beta (t) = c_1e^{\omega t}\cos(\alpha t) + c_2e^{\omega t}\sin(\alpha t) = e^{\omega t}\Big( c_1\cos(\alpha t) + c_2\sin(\alpha t)  \Big)
+\end{equation*}
+Daí, basta notar que como $\displaystyle{c_1\cos(\alpha t) + c_2\sin(\alpha t)}$ é limitado e $e^{\omega t}\to 0$  à medida que $t\to\infty$, então $\displaystyle{\lim_{t\to \infty}\beta(t) = 0}$. Concluímos então que todas as soluções de (1) tendem ao equilíbrio $\beta (t) = 0$ para $k > 1$ e $b > 0$.
+
+\subsection{Uma possível ``trapaça''}
+\hspace{12pt} Poderíamos ter conduzido a análise de (1) de modo diferente, assumindo familiaridade com a EDO de um sistema massa-mola amortecido. Sabemos que em tal sistema, as soluções sempre retornam ao equilíbrio (seja de forma exponencial ou oscilatória). 
+\vspace{0.2cm}
+\par Note que se $k>1$, (1) é a EDO de um sistema massa-mola-amortecimento e, consequentemente, todas as soluções retornam ao equilíbrio. 
+\vspace{0.2cm}
+\par Daí, bastaria analisar (1) para $k<1$. Fazendo a análise do mesmo modo feito acima, teríamos $\Delta > 0$ mas $r_2 > 0$. Logo, para $k<1$ as soluções de (1) não retornam ao equilíbrio $\beta (t) = 0$. 
+
+
+
+
+\end{document}
