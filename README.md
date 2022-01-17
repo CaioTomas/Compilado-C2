@@ -1,6 +1,6 @@
 # English description
 
-This repo consists of a file with 3 texts, written by me, about the ODEs of Hermite and the dampened simple harmonic movement. These texts were written during the second semester of 2019, during the **Calculus 2** course of the University of Brasília ministered by professor Lucas Conque Seco Ferreira.
+This repo consists of a file with 3 texts, written by me, about the ODEs of Hermite and the damped simple harmonic movement. These texts were written during the second semester of 2019, during the **Calculus 2** course of the University of Brasília ministered by professor Lucas Conque Seco Ferreira.
 
 --------------------------------------------------------------------------------------------------------------
 
